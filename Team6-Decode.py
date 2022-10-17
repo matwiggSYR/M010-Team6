@@ -1,11 +1,29 @@
-import makeDictionary
+import xlrd
 def Decode(txtFile):
     # opens and stores what is in the bin_output.txt file in the string "inputBin"
     myTxtFile = open(txtFile)
     inputBin = myTxtFile.read()
 
     # storing the key for the dictionary Char2Bin, because Code converts binary to characters
-    myKey = makeDictionary.getCodeMap('bin2char')
+    wb = xlrd.open_workbook('Team6-Table.xls')
+    sh = wb.sheet_by_index(0)
+    Bin2Char = {}
+    for i in range(2,18):
+        char = sh.cell(i, 0).value
+        binVal = sh.cell(i, 1).value
+
+        # Add the binary value and character to the dictionary.
+        Bin2Char[binVal] = char
+
+    for i in range(2,59):
+        char = sh.cell(i, 5).value
+        binVal = sh.cell(i, 6).value
+
+
+        Bin2Char[binVal] = char
+
+    myKey = Bin2Char
+
 
     # converts the input string into a list and then splits the decimal value from the binary value
     binList = inputBin.split('.')
